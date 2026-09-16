@@ -10,6 +10,9 @@
 GATE/
 ├── CS_GATE2027_Syllabus.pdf          # Official syllabus PDF
 ├── generate_trackers.py              # Python script to regenerate XLSX trackers
+├── generate_gift_v2.py               # Rebuild PYQ question bank from extracted papers
+├── generate_curated.py               # Rebuild curated supplement (351+ parametric questions)
+├── merge_and_validate.py             # Merge PYQ + curated → exactly 1000, validate GIFT
 │
 └── GATE_2027/
     ├── 01_Planning/                  # Strategy & schedules
@@ -40,8 +43,14 @@ GATE/
     │   ├── ERROR_LOG.xlsx            # Mistake tracking with categories
     │   └── REVISION_CALENDAR.xlsx    # 24-week schedule + daily hours log
     │
-    └── 05_Revision/                  # Final months strategy
-        └── FINAL_REVISION_PLAN.md    # Last 4 weeks day-by-day + exam day tactics
+    ├── 05_Revision/                  # Final months strategy
+    │   └── FINAL_REVISION_PLAN.md    # Last 4 weeks day-by-day + exam day tactics
+    │
+    └── 06_PYQ_Papers/                # Question papers + Moodle question bank
+        ├── GATE_CSE_1000_Questions.gift   # ★ 1000-question Moodle GIFT bank
+        ├── GATE_CSE_PYQ.gift              # 647 real PYQs (2012–2026) with official keys
+        ├── GATE_CSE_CURATED.gift          # 353 curated questions (parametric, verified answers)
+        └── *.pdf                          # Official GATE CS papers 2007–2026
 ```
 
 ---
@@ -68,6 +77,25 @@ GATE/
 ```bash
 python3 generate_trackers.py
 ```
+
+---
+
+## Question Bank (Moodle GIFT)
+
+`GATE_2027/06_PYQ_Papers/GATE_CSE_1000_Questions.gift` — **1000 questions**, importable into Moodle
+(Question bank → Import → GIFT format).
+
+| Source | Count | Description |
+|--------|-------|-------------|
+| Real PYQs | 647 | GATE CS 2012–2026, answers from official keys / GATEOverflow |
+| Curated | 353 | Original questions with computed, verified answers |
+| **Total** | **1000** | 416 MCQ · 118 MSQ · 466 NAT |
+
+- **22 categories** (`GATE CSE PYQ/*` and `GATE CSE Curated/*`) — pick subjects when building quizzes
+- Every question carries `####Source:` feedback (year + question number, or topic for curated)
+- MSQ questions use percentage weights (no partial credit, matching GATE)
+- NAT answers use `{#value}` (Moodle-tolerance); range answers preserved as `{#lo..hi}`
+- Rebuild: `python3 generate_gift_v2.py && python3 generate_curated.py && python3 merge_and_validate.py`
 
 ---
 
